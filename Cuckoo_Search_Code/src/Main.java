@@ -9,7 +9,12 @@ public class Main {
         double[] ub = {ub_l, ub_r};
         int maxIterations = 100;
 
-        int mode = 0;
+        int mode = 1;
+        // 0 - Twoja funkcja
+        // 1 - Funkcja Rosenbrocka
+        // 2 - Funkcja Bootha
+        // 3 - Funkcja Ackleya
+        // 4 - Funkcja Rastrigina
 
         CuckooSearch cuckooSearch = new CuckooSearch(populationSize, pa, alpha, lb, ub, maxIterations);
         cuckooSearch.run(mode);

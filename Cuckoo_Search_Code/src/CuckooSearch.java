@@ -12,9 +12,10 @@ public class CuckooSearch {
     private int maxIterations; // Maksymalna liczba iteracji algorytmu
     private Random random; // Obiekt generatora liczb losowych
 
-    private String nameFunction="Twoja Funkcja", bestSolution="", optimum="";
-    private double fitness=0;
-    private int mode=0;
+    private String nameFunction="Twoja Funkcja"; // Przechowywanie nazwy funkcji
+    private String bestSolution="", optimum=""; // Przechowywanie najlepszego rozwiązania i optimum
+    private double fitness=0; // Przechowywanie najleps
+    private int mode=0; // Przechowywanie trybu
 
     public String getNameFunction() {
         return nameFunction;

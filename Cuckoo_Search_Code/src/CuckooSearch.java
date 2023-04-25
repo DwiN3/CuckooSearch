@@ -5,10 +5,10 @@ import java.util.Random;
 public class CuckooSearch {
 
     private int populationSize; // Liczba potencjalnych rozwiązań problemu
-    private double pa; // Prawdopodobieństwo z jakim kukułki będą próbowały zastąpić gniazda innych kukułek
+    private double probability; // Prawdopodobieństwo z jakim kukułki będą próbowały zastąpić gniazda innych kukułek
     private double alpha; // Skala kroku, którym poruszają się kukułki
-    private double[] lb; // Dolna granica przedziału poszukiwań optymalnego rozwiązania
-    private double[] ub; // Górna granica przedziału poszukiwań optymalnego rozwiązania
+    private double[] leftBorder; // Dolna granica przedziału poszukiwań optymalnego rozwiązania
+    private double[] upperBorder; // Górna granica przedziału poszukiwań optymalnego rozwiązania
     private int maxIterations; // Maksymalna liczba iteracji algorytmu
     private Random random; // Obiekt generatora liczb losowych
 
@@ -33,22 +33,22 @@ public class CuckooSearch {
         return optimum;
     }
 
-    public CuckooSearch(int populationSize, double pa, double alpha, double[] lb, double[] ub, int maxIterations) {
+    public CuckooSearch(int populationSize, double probability, double alpha, double[] leftBorder, double[] upperBorder, int maxIterations) {
         this.populationSize = populationSize;
-        this.pa = pa;
+        this.probability = probability;
         this.alpha = alpha;
-        this.lb = lb;
-        this.ub = ub;
+        this.leftBorder = leftBorder;
+        this.upperBorder = upperBorder;
         this.maxIterations = maxIterations;
         this.random = new Random(); // Inicjalizacja generatora liczb losowych
     }
 
     public double[] run() {
         // Inicjalizacja populacji
-        double[][] population = new double[populationSize][lb.length];
+        double[][] population = new double[populationSize][leftBorder.length];
         for (int i = 0; i < populationSize; i++) {
-            for (int j = 0; j < lb.length; j++) {
-                population[i][j] = lb[j] + random.nextDouble() * (ub[j] - lb[j]);
+            for (int j = 0; j < leftBorder.length; j++) {
+                population[i][j] = leftBorder[j] + random.nextDouble() * (upperBorder[j] - leftBorder[j]);
             }
         }
 
@@ -61,34 +61,34 @@ public class CuckooSearch {
         // Wykonywanie iteracji
         for (int iteration = 1; iteration <= maxIterations; iteration++) {
             // Generowanie nowej populacji
-            double[][] newPopulation = new double[populationSize][lb.length];
+            double[][] newPopulation = new double[populationSize][leftBorder.length];
             for (int i = 0; i < populationSize; i++) {
                 // Generowanie nowego rozwiązania
-                double[] newSolution = new double[lb.length];
-                for (int j = 0; j < lb.length; j++) {
+                double[] newSolution = new double[leftBorder.length];
+                for (int j = 0; j < leftBorder.length; j++) {
                     double r = random.nextDouble();
-                    if (r < pa) {
+                    if (r < probability) {
                         // Generowanie nowego rozwiązania za pomocą lotów Levy'ego
                         double sigma = Math.pow((gamma(1.0 + alpha) * Math.sin(Math.PI * alpha / 2.0) / (gamma((1.0 + alpha) / 2.0) * alpha * Math.pow(2.0, (alpha - 1.0) / 2.0))), 1.0 / alpha);
                         double u = random.nextGaussian() * sigma;
                         double v = random.nextGaussian() * sigma;
                         double step = u / Math.pow(Math.abs(v), 1.0 / alpha);
                         double newValue = population[i][j] + step;
-                        newSolution[j] = clamp(newValue, lb[j], ub[j]);
+                        newSolution[j] = clamp(newValue, leftBorder[j], upperBorder[j]);
                     } else {
                         // Generowanie nowego rozwiązania za pomocą losowego przesunięcia
                         int cuckooIndex = random.nextInt(populationSize);
                         double[] cuckoo = population[cuckooIndex];
                         double stepSize = random.nextDouble() * alpha;
-                        double[] step = new double[lb.length];
-                        for (int k = 0; k < lb.length; k++) {
+                        double[] step = new double[leftBorder.length];
+                        for (int k = 0; k < leftBorder.length; k++) {
                             step[k] = stepSize * (cuckoo[k] - population[i][k]);
                         }
-                        double[] newValue = new double[lb.length];  // obliczanie wartości funkcji celu dla nowego rozwiązania
-                        for (int k = 0; k < lb.length; k++) {
+                        double[] newValue = new double[leftBorder.length];  // obliczanie wartości funkcji celu dla nowego rozwiązania
+                        for (int k = 0; k < leftBorder.length; k++) {
                             newValue[k] = population[i][k] + step[k];
                         }
-                        newSolution[j] = clamp(newValue[j], lb[j], ub[j]);
+                        newSolution[j] = clamp(newValue[j], leftBorder[j], upperBorder[j]);
                     }
                 }
                 newPopulation[i] = newSolution;
@@ -102,10 +102,10 @@ public class CuckooSearch {
                 population[i] = newPopulation[populationSize - 1 - i];
             }
 
-            // Sort the population by fitness
+            // Sortuj populację według sprawności
             sortPopulation(population);
 
-            // Update the best solution
+            // Zaktualizuj najlepsze rozwiązanie
             if (fitness(population[0]) < fitness(bestSolution)) {
                 bestSolution = population[0];
             }
@@ -159,7 +159,7 @@ public class CuckooSearch {
     public void run(int mode) {
         this.mode = mode;
         set();
-        CuckooSearch cuckooSearch = new CuckooSearch(populationSize, pa, alpha, lb, ub, maxIterations);
+        CuckooSearch cuckooSearch = new CuckooSearch(populationSize, probability, alpha, leftBorder, upperBorder, maxIterations);
         double[] solution = cuckooSearch.run();
 
         bestSolution = Arrays.toString(solution);
@@ -170,27 +170,27 @@ public class CuckooSearch {
     private void set(){
         if(mode == 1){
             nameFunction = "Funkcja Rosenbrocka";
-            lb = new double[]{-2.048, -2.048};
-            ub = new double[]{2.048, 2.048};
+            leftBorder = new double[]{-2.048, -2.048};
+            upperBorder = new double[]{2.048, 2.048};
             optimum="Optimum: [1.0, 1.0]";
 
         }
         if(mode == 2){
             nameFunction = "Funkcja Bootha";
-            lb = new double[]{-10.0, -10.0};
-            ub = new double[]{10.0, 10.0};
+            leftBorder = new double[]{-10.0, -10.0};
+            upperBorder = new double[]{10.0, 10.0};
             optimum="Optimum: [1.0, 3.0]";
         }
         if(mode == 3){
             nameFunction = "Funkcja Ackleya";
-            lb = new double[]{-32.0, -32.0};
-            ub = new double[]{32.0, 32.0};
+            leftBorder = new double[]{-32.0, -32.0};
+            upperBorder = new double[]{32.0, 32.0};
             optimum="Optimum: [0.0, 0.0]";
         }
         if(mode == 4){
             nameFunction = "Funkcja Rastrigina";
-            lb = new double[]{-5.12, -5.12};
-            ub = new double[]{5.12, 5.12};
+            leftBorder = new double[]{-5.12, -5.12};
+            upperBorder = new double[]{5.12, 5.12};
             optimum="Optimum: [0.0, 0.0]";
         }
     }

@@ -160,40 +160,18 @@ public class CuckooSearch {
 
     public void run(int mode) {
         this.mode = mode;
-        set();
+        SetFunctions setFunctions = new SetFunctions(mode);
+        if(mode != 0){
+            nameFunction = getNameFunction();
+            optimum = getOptimum();
+            leftBorder = setFunctions.getLeftBorder();
+            upperBorder =  setFunctions.getUpperBorder();
+        }
+
         CuckooSearch cuckooSearch = new CuckooSearch(populationSize, probability, alpha, leftBorder, upperBorder, maxIterations);
         double[] solution = cuckooSearch.run();
 
         bestSolution = Arrays.toString(solution);
         fitness = cuckooSearch.fitness(solution);
-    }
-
-    // Ustawia wartości dla odpowiedniego trybu
-    private void set(){
-        if(mode == 1){
-            nameFunction = "Funkcja Rosenbrocka";
-            leftBorder = new double[]{-2.048, -2.048};
-            upperBorder = new double[]{2.048, 2.048};
-            optimum="Optimum: [1.0, 1.0]";
-
-        }
-        if(mode == 2){
-            nameFunction = "Funkcja Bootha";
-            leftBorder = new double[]{-10.0, -10.0};
-            upperBorder = new double[]{10.0, 10.0};
-            optimum="Optimum: [1.0, 3.0]";
-        }
-        if(mode == 3){
-            nameFunction = "Funkcja Ackleya";
-            leftBorder = new double[]{-32.0, -32.0};
-            upperBorder = new double[]{32.0, 32.0};
-            optimum="Optimum: [0.0, 0.0]";
-        }
-        if(mode == 4){
-            nameFunction = "Funkcja Rastrigina";
-            leftBorder = new double[]{-5.12, -5.12};
-            upperBorder = new double[]{5.12, 5.12};
-            optimum="Optimum: [0.0, 0.0]";
-        }
     }
 }

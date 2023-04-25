@@ -4,11 +4,12 @@ import java.io.IOException;
 
 import cuckoo.search.CuckooSearch;
 import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
 
 public class CuckooSearchController {
 
     @FXML
-    private F
+    private TextField a;
     
 
     @FXML

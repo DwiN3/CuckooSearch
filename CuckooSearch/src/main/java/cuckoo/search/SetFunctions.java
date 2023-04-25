@@ -31,8 +31,7 @@ public class SetFunctions {
         }
     }
 
-    public String getNameFunction(){
-        return nameFunction;
+    public String getNameFunction(){ return nameFunction;
     }
 
     public String getOptimum() {

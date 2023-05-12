@@ -160,8 +160,8 @@ public class CuckooSearch {
 
     public void run(int mode) {
         this.mode = mode;
-        SetFunctions setFunctions = new SetFunctions(mode);
         if(mode != 0){
+            SetFunctions setFunctions = new SetFunctions(mode);
             nameFunction = setFunctions.getNameFunction();
             optimum = setFunctions.getOptimum();
             leftBorder = setFunctions.getLeftBorder();

@@ -110,6 +110,10 @@ public class CuckooSearchController {
         getLb_r.setText(String.valueOf(set.getLb_r()));
         getUb_l.setText(String.valueOf(set.getUb_l()));
         getUb_r.setText(String.valueOf(set.getUb_r()));
+        numLb_l = set.getLb_l();
+        numLb_r = set.getLb_r();
+        numUb_l = set.getUb_l();
+        numUb_r = set.getUb_r();
     }
 
     public void cuckoo(){

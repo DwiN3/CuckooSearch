@@ -164,8 +164,6 @@ public class CuckooSearch {
             SetFunctions setFunctions = new SetFunctions(mode);
             nameFunction = setFunctions.getNameFunction();
             optimum = setFunctions.getOptimum();
-            leftBorder = setFunctions.getLeftBorder();
-            upperBorder =  setFunctions.getUpperBorder();
         }
 
         CuckooSearch cuckooSearch = new CuckooSearch(populationSize, probability, alpha, leftBorder, upperBorder, maxIterations);

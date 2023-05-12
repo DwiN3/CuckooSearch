@@ -1,14 +1,15 @@
 package org.example;
 
-import java.io.IOException;
-
 import cuckoo.search.CuckooSearch;
 import cuckoo.search.SetFunctions;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
+
+import java.util.Arrays;
 
 public class CuckooSearchController {
 
@@ -36,6 +37,8 @@ public class CuckooSearchController {
     private Button start;
     @FXML
     private Button reset;
+    @FXML
+    private Button setDefault;
 
     private Number numProbability = 0;
     private Number numAlpha = 0;
@@ -48,6 +51,11 @@ public class CuckooSearchController {
     int mode = 0;
 
     public void initialize(){
+
+        start.setOnAction(this::cuckoo);
+        setDefault.setOnAction(this::defaultData);
+        reset.setOnAction(this::resetData);
+
         getProbability.setOnKeyTyped(keyEvent -> numProbability = validateInput(getProbability));
         getMaxIteration.setOnKeyTyped(keyEvent -> numMaxIterations = validateInput(getMaxIteration));
         getUb_r.setOnKeyTyped(keyEvent -> numUb_r = validateInput(getUb_r));
@@ -57,8 +65,8 @@ public class CuckooSearchController {
         getLb_r.setOnKeyTyped(keyEvent -> numLb_r = validateInput(getLb_r));
         getLb_l.setOnKeyTyped(keyEvent -> numLb_l = validateInput(getLb_l));
 
-        chooseFunction.getItems().addAll("Rosenbrock", "Booth", "Ackley", "Schwefel");
-        chooseFunction.setValue("Wybierz funkcję");
+        chooseFunction.getItems().addAll("Twoja funkcja", "Rosenbrock", "Booth", "Ackley", "Schwefel");
+        chooseFunction.setValue("Twoja funkcja");
         chooseFunction.setOnAction(event -> {
             String selectedFunction = chooseFunction.getSelectionModel().getSelectedItem();
             switch (selectedFunction) {
@@ -78,8 +86,13 @@ public class CuckooSearchController {
                     mode = 4;
                     setFunction(mode);
                     break;
-                default:
+                case "Twoja funkcja":
                     mode = 0;
+                    getLb_l.clear();
+                    getLb_r.clear();
+                    getUb_l.clear();
+                    getUb_r.clear();
+                    break;
             }
             System.out.println("Selected function mode: " + mode);
         });
@@ -110,52 +123,84 @@ public class CuckooSearchController {
         getLb_r.setText(String.valueOf(set.getLb_r()));
         getUb_l.setText(String.valueOf(set.getUb_l()));
         getUb_r.setText(String.valueOf(set.getUb_r()));
-        numLb_l = set.getLb_l();
-        numLb_r = set.getLb_r();
-        numUb_l = set.getUb_l();
-        numUb_r = set.getUb_r();
     }
 
-    public void cuckoo(){
-        start.setOnAction(v->{
-            int populationSize = numPopulationSize.intValue();
-            double probability = numProbability.doubleValue();
-            double alpha = numAlpha.doubleValue();
-            double lb_l = numLb_l.doubleValue();
-            double lb_r = numLb_r.doubleValue();
-            double ub_l = numUb_l.doubleValue();
-            double ub_r = numUb_r.doubleValue();
-            int maxIterations = numMaxIterations.intValue();
-            double[] lb = new double[]{lb_l, lb_r};
-            double[] ub = new double[]{ub_l, ub_r};
+    @FXML
+    private void cuckoo(ActionEvent event){
+        int populationSize = numPopulationSize.intValue();
+        double probability = numProbability.doubleValue();
+        double alpha = numAlpha.doubleValue();
+        double lb_l = numLb_l.doubleValue();
+        double lb_r = numLb_r.doubleValue();
+        double ub_l = numUb_l.doubleValue();
+        double ub_r = numUb_r.doubleValue();
+        int maxIterations = numMaxIterations.intValue();
+        double[] lb = new double[]{lb_l, lb_r};
+        double[] ub = new double[]{ub_l, ub_r};
 
-            CuckooSearch cuckooSearch = new CuckooSearch(populationSize, probability, alpha, lb, ub, maxIterations);
-            cuckooSearch.run(mode);
-            System.out.println(cuckooSearch.getNameFunction());
-            System.out.println(cuckooSearch.getBestSolution());
-            System.out.println(cuckooSearch.getFitness());
-            System.out.println(cuckooSearch.getOptimum());
+        CuckooSearch cuckooSearch = new CuckooSearch(populationSize, probability, alpha, lb, ub, maxIterations);
+        cuckooSearch.run(mode);
+        System.out.println(cuckooSearch.getNameFunction());
+        System.out.println(cuckooSearch.getBestSolution());
+        System.out.println(cuckooSearch.getFitness());
+        System.out.println(cuckooSearch.getOptimum());
 
-            setResult.setText(cuckooSearch.getNameFunction() + "\n"
-                    + cuckooSearch.getBestSolution() + "\n"
-                    + cuckooSearch.getFitness() + "\n"
-                    + cuckooSearch.getOptimum() + "\n");
-        });
+        setResult.setText(cuckooSearch.getNameFunction() + "\n"
+                + cuckooSearch.getBestSolution() + "\n"
+                + cuckooSearch.getFitness() + "\n"
+                + cuckooSearch.getOptimum() + "\n");
+
     }
 
-    public void resetData() {
-        reset.setOnAction(v->{
-            chooseFunction.setValue(null);
-            mode = 0;
-            getProbability.clear();
-            getAlpha.clear();
-            getLb_l.clear();
-            getLb_r.clear();
-            getUb_l.clear();
-            getUb_r.clear();
-            getMaxIteration.clear();
-            getPopulationSize.clear();
-            setResult.setText("");
-        });
+    @FXML
+    public void resetData(ActionEvent event) {
+        getProbability.clear();
+        getAlpha.clear();
+        getLb_l.clear();
+        getLb_r.clear();
+        getUb_l.clear();
+        getUb_r.clear();
+        getMaxIteration.clear();
+        getPopulationSize.clear();
+
+        numProbability = null;
+        numAlpha = null;
+        numLb_l = null;
+        numLb_r = null;
+        numUb_l = null;
+        numUb_r = null;
+        numMaxIterations = null;
+        numPopulationSize = null;
+
+        setResult.setText("");
+    }
+
+    @FXML
+    public void defaultData(ActionEvent event) {
+        getProbability.setText("0.25");
+        numProbability = validateInput(getProbability);
+
+        getAlpha.setText("0.8");
+        numAlpha = validateInput(getAlpha);
+
+        getLb_l.setText("-10.0");
+        numLb_l = validateInput(getLb_l);
+
+        getLb_r.setText("-5.0");
+        numLb_r = validateInput(getLb_r);
+
+        getUb_l.setText("5.0");
+        numUb_l =validateInput(getUb_l);
+
+        getUb_r.setText("10.0");
+        numUb_r = validateInput(getUb_r);
+
+        getMaxIteration.setText("500");
+        numMaxIterations = validateInput(getMaxIteration);
+
+        getPopulationSize.setText("1000");
+        numPopulationSize = validateInput(getPopulationSize);
+
+        setResult.setText("");
     }
 }

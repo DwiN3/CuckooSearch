@@ -204,10 +204,10 @@ public class CuckooSearchController {
         getUb_r.setText("10.0");
         numUb_r = validateInput(getUb_r);
 
-        getMaxIteration.setText("500");
+        getMaxIteration.setText("1000");
         numMaxIterations = validateInput(getMaxIteration);
 
-        getPopulationSize.setText("1000");
+        getPopulationSize.setText("500");
         numPopulationSize = validateInput(getPopulationSize);
 
         setResult.setText("");

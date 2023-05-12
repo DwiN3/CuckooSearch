@@ -9,7 +9,7 @@ public class Main {
         double[] ub = {ub_l, ub_r};
         int maxIterations = 1000;
 
-        int mode = 2;
+        int mode = 0;
         // 0 - Twoja funkcja
         // 1 - Funkcja Rosenbrocka
         // 2 - Funkcja Bootha

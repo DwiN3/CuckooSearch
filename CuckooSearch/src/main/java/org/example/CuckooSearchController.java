@@ -141,6 +141,8 @@ public class CuckooSearchController {
 
     public void resetData() {
         reset.setOnAction(v->{
+            chooseFunction.setValue(null);
+            mode = 0;
             getProbability.clear();
             getAlpha.clear();
             getLb_l.clear();

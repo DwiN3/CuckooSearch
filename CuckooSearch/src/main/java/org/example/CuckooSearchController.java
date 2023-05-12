@@ -123,6 +123,11 @@ public class CuckooSearchController {
         getLb_r.setText(String.valueOf(set.getLb_r()));
         getUb_l.setText(String.valueOf(set.getUb_l()));
         getUb_r.setText(String.valueOf(set.getUb_r()));
+
+        numLb_l = validateInput(getLb_l);
+        numLb_r = validateInput(getLb_r);
+        numUb_l =validateInput(getUb_l);
+        numUb_r = validateInput(getUb_r);
     }
 
     @FXML

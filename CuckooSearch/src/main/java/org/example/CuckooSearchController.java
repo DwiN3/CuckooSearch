@@ -47,11 +47,19 @@ public class CuckooSearchController {
         // 4 - Funkcja Rastrigina
         mode = 0;
 
-        CuckooSearch cuckooSearch = new CuckooSearch((int) populationSize_, probability_, alpha_, lb, ub, (int) maxIteration_);
+        CuckooSearch cuckooSearch = new CuckooSearch(populationSize_, probability_, alpha_, lb, ub, maxIteration_);
         cuckooSearch.run(mode);
         results.setText(cuckooSearch.getNameFunction()+"\n"+cuckooSearch.getBestSolution()+"\n"+cuckooSearch.getFitness()+"\n"+cuckooSearch.getOptimum());
     }
-    
+
+    @FXML
+    private void resetValue(){
+        populationSize.setText("");
+        alpha.setText("");
+        maxIteration.setText("");
+        probability.setText("");
+    }
+
     private void setDefultValues() {
         populationSize_ = 500;
         probability_ = 0.25;

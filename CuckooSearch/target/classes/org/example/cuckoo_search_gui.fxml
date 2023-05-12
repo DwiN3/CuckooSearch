@@ -48,7 +48,7 @@
          </rowConstraints>
          <children>
             <Button fx:id="start" mnemonicParsing="false" onAction="#run" prefHeight="26.0" prefWidth="90.0" text="START" />
-            <Button fx:id="reset" mnemonicParsing="false" prefHeight="26.0" prefWidth="90.0" text="RESET" GridPane.columnIndex="1" />
+            <Button fx:id="reset" mnemonicParsing="false" onAction="#resetValue" prefHeight="26.0" prefWidth="90.0" text="RESET" GridPane.columnIndex="1" />
          </children>
       </GridPane>
       <Text fx:id="results" layoutX="56.0" layoutY="317.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="487.20000000000005" />

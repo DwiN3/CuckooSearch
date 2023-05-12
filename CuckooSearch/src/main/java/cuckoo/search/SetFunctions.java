@@ -24,9 +24,9 @@ public class SetFunctions {
             optimum="Optimum: [0.0, 0.0]";
         }
         if(mode == 4){
-            nameFunction = "Funkcja Schwefela";
-            lb_l = -500.0; lb_r = -500.0;
-            ub_l =  500.0; ub_r =  500.0;
+            nameFunction = "Funkcja Rastrigina";
+            lb_l = -5.12; lb_r = -5.12;
+            ub_l =  5.12; ub_r =  5.12;
             optimum="Optimum: [0.0, 0.0]";
         }
     }

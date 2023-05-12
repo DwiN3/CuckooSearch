@@ -125,7 +125,7 @@ public class CuckooSearchController {
         });
 
 
-        chooseFunction.getItems().addAll("Twoja funkcja", "Rosenbrock", "Booth", "Ackley", "Schwefel");
+        chooseFunction.getItems().addAll("Twoja funkcja", "Rosenbrock", "Booth", "Ackley", "Rastrigin");
         chooseFunction.setValue("Twoja funkcja");
         chooseFunction.setOnAction(event -> {
             String selectedFunction = chooseFunction.getSelectionModel().getSelectedItem();
@@ -142,7 +142,7 @@ public class CuckooSearchController {
                     mode = 3;
                     setFunction(mode);
                     break;
-                case "Schwefel":
+                case "Rastrigin":
                     mode = 4;
                     setFunction(mode);
                     break;

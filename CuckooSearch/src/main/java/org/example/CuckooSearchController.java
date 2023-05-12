@@ -3,6 +3,7 @@ package org.example;
 import java.io.IOException;
 
 import cuckoo.search.CuckooSearch;
+import cuckoo.search.SetFunctions;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -70,7 +71,7 @@ public class CuckooSearchController {
                 case "Ackley":
                     mode = 3;
                     break;
-                case "Rastrigin":
+                case "Schwefel":
                     mode = 4;
                     break;
                 default:
@@ -98,6 +99,11 @@ public class CuckooSearchController {
         }
 
     } //obługa wprowadzania cyfr, blokowanie liter
+
+    private void setFunction(int mode){
+        SetFunctions set = new SetFunctions(mode);
+
+    }
 
     public void cuckoo(){
         start.setOnAction(v->{

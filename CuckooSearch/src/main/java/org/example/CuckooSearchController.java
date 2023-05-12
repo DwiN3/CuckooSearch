@@ -19,22 +19,26 @@ public class CuckooSearchController {
     @FXML
     private Text results;
 
+
+    private double probability_, alpha_;
+    private int populationSize_, maxIteration_;
     private int mode = 0;
-    private double populationSize_, probability_, alpha_, maxIteration_;
 
     @FXML
-    private void start() {
-        populationSize_ = Integer.parseInt(populationSize.getText());
-        probability_ = Integer.parseInt(probability.getText());
-        alpha_ = Integer.parseInt(alpha.getText());
+    private void run() {
+        if(checkEmptyValue()){
+            setDefultValues();
+        }
+        else{
+            populationSize_ = Integer.parseInt(populationSize.getText());
+            probability_ = Double.parseDouble(probability.getText());
+            alpha_ = Double.parseDouble(alpha.getText());
+            maxIteration_ = Integer.parseInt(maxIteration.getText());
+        }
+
         double lb_l = -10.0, lb_r = -5.0, ub_l = 5.0, ub_r = 10.0;
         double[] lb = {lb_l, lb_r};
         double[] ub = {ub_l, ub_r};
-        maxIteration_ = Integer.parseInt(maxIteration.getText());
-
-        if(populationSize_ == 0 || probability_ == 0 || alpha_ == 0 || maxIteration_ == 0){
-            setDefultValues();
-        }
 
         // 0 - Twoja funkcja
         // 1 - Funkcja Rosenbrocka
@@ -45,12 +49,10 @@ public class CuckooSearchController {
 
         CuckooSearch cuckooSearch = new CuckooSearch((int) populationSize_, probability_, alpha_, lb, ub, (int) maxIteration_);
         cuckooSearch.run(mode);
-
-        reset.setText(cuckooSearch.getNameFunction()+"\n"+cuckooSearch.getBestSolution()+"\n"+cuckooSearch.getFitness()+"\n"+cuckooSearch.getOptimum());
+        results.setText(cuckooSearch.getNameFunction()+"\n"+cuckooSearch.getBestSolution()+"\n"+cuckooSearch.getFitness()+"\n"+cuckooSearch.getOptimum());
     }
     
-    
-    public void setDefultValues() {
+    private void setDefultValues() {
         populationSize_ = 500;
         probability_ = 0.25;
         alpha_ = 0.8;
@@ -59,4 +61,11 @@ public class CuckooSearchController {
         double[] ub = {ub_l, ub_r};
         maxIteration_ = 1000;
     }
+
+    private boolean checkEmptyValue(){
+        if(populationSize.getText().isEmpty() ||  probability.getText().isEmpty() || alpha.getText().isEmpty() || maxIteration.getText().isEmpty())
+            return true;
+        else return false;
+    }
+
 }

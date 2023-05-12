@@ -4,29 +4,20 @@ import java.io.IOException;
 
 import cuckoo.search.CuckooSearch;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.text.Text;
 
 public class CuckooSearchController {
 
     @FXML
-    private TextField probability, alpha, leftBorder, upperBorder, maxIteration, populationSize;
-
-    @FXML
-    private Button start, reset;
-
-    @FXML
-    private Text results;
+    private TextField a;
     
 
     @FXML
-    private void start() {
+    private void test() throws IOException {
         
     }
-
-    @FXML
+    
+    
     public void testApp() {
         int populationSize = 500;
         double probability = 0.25;

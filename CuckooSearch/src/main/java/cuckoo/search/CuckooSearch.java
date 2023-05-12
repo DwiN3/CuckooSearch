@@ -18,6 +18,7 @@ public class CuckooSearch {
     private String bestSolution="", optimum=""; // Przechowywanie najlepszego rozwiązania i optimum
     private double fitness=0; // Przechowywanie najleps
     private int mode=0; // Przechowywanie trybu
+    private int count=10; // Licznik wyświetlający najlepsze rozwiązania
 
     public String getNameFunction() {
         return nameFunction;
@@ -112,8 +113,19 @@ public class CuckooSearch {
                 bestSolution = population[0];
             }
 
-            // Wyświetlanie najlepszego wyniku
-            //System.out.println("Iteration " + iteration + ": " + fitness(bestSolution));
+            // Wyświetlanie 10 przykładowych iteracji najlepszego rozwiązania (TESTY)
+            count-=1;
+            //if(count > 0) System.out.println("Iteration " + iteration + ": " + fitness(bestSolution));
+
+            // Wyświetlanie iteracji najlepszego rozwiązania
+            double[] currentBest = newPopulation[0];
+            for (int i = 1; i < populationSize; i++) {
+                if (fitness(newPopulation[i]) > fitness(currentBest)) {
+                    currentBest = newPopulation[i];
+                }
+            }
+            // Wyświetlanie przykładowych iteracji najlepszego rozwiązania (TESTY)
+            //System.out.println("Best solution in population " + iteration + ": " + Arrays.toString(currentBest));
         }
 
         return bestSolution;

@@ -162,31 +162,40 @@ public class CuckooSearchController {
         numUb_r = validateInput(getUb_r);
     }
 
+    private boolean EmptyValue(){
+        if(getProbability.getText().isEmpty() || getAlpha.getText().isEmpty() || getLb_l.getText().isEmpty() || getLb_r.getText().isEmpty() || getUb_l.getText().isEmpty() || getUb_r.getText().isEmpty() || getMaxIteration.getText().isEmpty() || getPopulationSize.getText().isEmpty()){
+            return true;
+        }
+        else return false;
+    }
+
     @FXML
     private void cuckoo(ActionEvent event){
-        int populationSize = numPopulationSize.intValue();
-        double probability = numProbability.doubleValue();
-        double alpha = numAlpha.doubleValue();
-        double lb_l = numLb_l.doubleValue();
-        double lb_r = numLb_r.doubleValue();
-        double ub_l = numUb_l.doubleValue();
-        double ub_r = numUb_r.doubleValue();
-        int maxIterations = numMaxIterations.intValue();
-        double[] lb = new double[]{lb_l, lb_r};
-        double[] ub = new double[]{ub_l, ub_r};
+        if(!EmptyValue()){
+            int populationSize = numPopulationSize.intValue();
+            double probability = numProbability.doubleValue();
+            double alpha = numAlpha.doubleValue();
+            double lb_l = numLb_l.doubleValue();
+            double lb_r = numLb_r.doubleValue();
+            double ub_l = numUb_l.doubleValue();
+            double ub_r = numUb_r.doubleValue();
+            int maxIterations = numMaxIterations.intValue();
+            double[] lb = new double[]{lb_l, lb_r};
+            double[] ub = new double[]{ub_l, ub_r};
 
-        CuckooSearch cuckooSearch = new CuckooSearch(populationSize, probability, alpha, lb, ub, maxIterations);
-        cuckooSearch.run(mode);
-        System.out.println(cuckooSearch.getNameFunction());
-        System.out.println(cuckooSearch.getBestSolution());
-        System.out.println(cuckooSearch.getFitness());
-        System.out.println(cuckooSearch.getOptimum());
+            CuckooSearch cuckooSearch = new CuckooSearch(populationSize, probability, alpha, lb, ub, maxIterations);
+            cuckooSearch.run(mode);
+            System.out.println(cuckooSearch.getNameFunction());
+            System.out.println(cuckooSearch.getBestSolution());
+            System.out.println(cuckooSearch.getFitness());
+            System.out.println(cuckooSearch.getOptimum());
 
-        setResult.setText(cuckooSearch.getNameFunction() + "\n"
-                + cuckooSearch.getBestSolution() + "\n"
-                + cuckooSearch.getFitness() + "\n"
-                + cuckooSearch.getOptimum() + "\n");
-
+            setResult.setText(cuckooSearch.getNameFunction() + "\n"
+                    + cuckooSearch.getBestSolution() + "\n"
+                    + cuckooSearch.getFitness() + "\n"
+                    + cuckooSearch.getOptimum() + "\n");
+        }
+        else setResult.setText("Brak danych");
     }
 
     @FXML

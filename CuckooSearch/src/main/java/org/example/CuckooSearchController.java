@@ -182,6 +182,10 @@ public class CuckooSearchController {
 
     @FXML
     public void defaultData(ActionEvent event) {
+
+        chooseFunction.setValue("Twoja funkcja");
+        mode = 0;
+
         getProbability.setText("0.25");
         numProbability = validateInput(getProbability);
 

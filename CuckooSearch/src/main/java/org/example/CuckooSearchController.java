@@ -55,15 +55,42 @@ public class CuckooSearchController {
         start.setOnAction(this::cuckoo);
         setDefault.setOnAction(this::defaultData);
         reset.setOnAction(this::resetData);
-
         getProbability.setOnKeyTyped(keyEvent -> numProbability = validateInput(getProbability));
         getMaxIteration.setOnKeyTyped(keyEvent -> numMaxIterations = validateInput(getMaxIteration));
-        getUb_r.setOnKeyTyped(keyEvent -> numUb_r = validateInput(getUb_r));
-        getUb_l.setOnKeyTyped(keyEvent -> numUb_l =validateInput(getUb_l));
         getAlpha.setOnKeyTyped(keyEvent -> numAlpha = validateInput(getAlpha));
         getPopulationSize.setOnKeyTyped(keyEvent -> numPopulationSize = validateInput(getPopulationSize));
-        getLb_r.setOnKeyTyped(keyEvent -> numLb_r = validateInput(getLb_r));
-        getLb_l.setOnKeyTyped(keyEvent -> numLb_l = validateInput(getLb_l));
+        getLb_r.setOnKeyTyped(keyEvent -> {
+            if(mode !=0 ){
+                setAutoFunction();
+                getLb_r.appendText(keyEvent.getCharacter());
+            }
+            numLb_r = validateInput(getLb_r);
+            getLb_r.positionCaret(getLb_r.getText().length());
+        });
+        getLb_l.setOnKeyTyped(keyEvent -> {
+            if(mode !=0 ){
+                setAutoFunction();
+                getLb_l.appendText(keyEvent.getCharacter());
+            }
+            numLb_l = validateInput(getLb_l);
+            getLb_l.positionCaret(getLb_l.getText().length());
+        });
+        getUb_r.setOnKeyTyped(keyEvent -> {
+            if(mode !=0 ){
+                setAutoFunction();
+                getUb_r.appendText(keyEvent.getCharacter());
+            }
+            numUb_r = validateInput(getUb_r);
+            getUb_r.positionCaret(getUb_r.getText().length());
+        });
+        getUb_l.setOnKeyTyped(keyEvent -> {
+            if(mode !=0 ){
+                setAutoFunction();
+                getUb_l.appendText(keyEvent.getCharacter());
+            }
+            numUb_l = validateInput(getUb_l);
+            getUb_l.positionCaret(getUb_l.getText().length());
+        });
 
         chooseFunction.getItems().addAll("Twoja funkcja", "Rosenbrock", "Booth", "Ackley", "Schwefel");
         chooseFunction.setValue("Twoja funkcja");
@@ -117,6 +144,11 @@ public class CuckooSearchController {
 
     } //obługa wprowadzania cyfr, blokowanie liter
 
+    private void setAutoFunction(){
+        chooseFunction.setValue("Twoja funkcja");
+        mode = 0;
+    }
+
     private void setFunction(int mode){
         SetFunctions set = new SetFunctions(mode);
         getLb_l.setText(String.valueOf(set.getLb_l()));
@@ -159,6 +191,8 @@ public class CuckooSearchController {
 
     @FXML
     public void resetData(ActionEvent event) {
+        chooseFunction.setValue("Twoja funkcja");
+
         getProbability.clear();
         getAlpha.clear();
         getLb_l.clear();

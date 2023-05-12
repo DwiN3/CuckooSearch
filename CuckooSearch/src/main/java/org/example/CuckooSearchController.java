@@ -60,37 +60,70 @@ public class CuckooSearchController {
         getAlpha.setOnKeyTyped(keyEvent -> numAlpha = validateInput(getAlpha));
         getPopulationSize.setOnKeyTyped(keyEvent -> numPopulationSize = validateInput(getPopulationSize));
         getLb_r.setOnKeyTyped(keyEvent -> {
-            if(mode !=0 ){
-                setAutoFunction();
-                getLb_r.appendText(keyEvent.getCharacter());
+            if (mode != 0) {
+                if (getLb_r.getCaretPosition() == getLb_r.getLength()) {
+                    setAutoFunction();
+                    getLb_r.appendText(keyEvent.getCharacter());
+                } else {
+                    int caretPosition = getLb_r.getCaretPosition()-1;
+                    setAutoFunction();
+                    String text = getLb_r.getText();
+                    String newText = text.substring(0, caretPosition) + keyEvent.getCharacter() + text.substring(caretPosition);
+                    getLb_r.setText(newText);
+                    getLb_r.positionCaret(caretPosition + 1);
+                }
             }
             numLb_r = validateInput(getLb_r);
-            getLb_r.positionCaret(getLb_r.getText().length());
         });
         getLb_l.setOnKeyTyped(keyEvent -> {
-            if(mode !=0 ){
-                setAutoFunction();
-                getLb_l.appendText(keyEvent.getCharacter());
+            if (mode != 0) {
+                if (getLb_l.getCaretPosition() == getLb_l.getLength()) {
+                    setAutoFunction();
+                    getLb_l.appendText(keyEvent.getCharacter());
+                } else {
+                    int caretPosition = getLb_l.getCaretPosition()-1;
+                    setAutoFunction();
+                    String text = getLb_l.getText();
+                    String newText = text.substring(0, caretPosition) + keyEvent.getCharacter() + text.substring(caretPosition);
+                    getLb_l.setText(newText);
+                    getLb_l.positionCaret(caretPosition + 1);
+                }
             }
             numLb_l = validateInput(getLb_l);
-            getLb_l.positionCaret(getLb_l.getText().length());
         });
         getUb_r.setOnKeyTyped(keyEvent -> {
-            if(mode !=0 ){
-                setAutoFunction();
-                getUb_r.appendText(keyEvent.getCharacter());
+            if (mode != 0) {
+                if (getUb_r.getCaretPosition() == getUb_r.getLength()) {
+                    setAutoFunction();
+                    getUb_r.appendText(keyEvent.getCharacter());
+                } else {
+                    int caretPosition = getUb_r.getCaretPosition()-1;
+                    setAutoFunction();
+                    String text = getUb_r.getText();
+                    String newText = text.substring(0, caretPosition) + keyEvent.getCharacter() + text.substring(caretPosition);
+                    getUb_r.setText(newText);
+                    getUb_r.positionCaret(caretPosition + 1);
+                }
             }
             numUb_r = validateInput(getUb_r);
-            getUb_r.positionCaret(getUb_r.getText().length());
         });
         getUb_l.setOnKeyTyped(keyEvent -> {
-            if(mode !=0 ){
-                setAutoFunction();
-                getUb_l.appendText(keyEvent.getCharacter());
+            if (mode != 0) {
+                if (getUb_l.getCaretPosition() == getUb_l.getLength()) {
+                    setAutoFunction();
+                    getUb_l.appendText(keyEvent.getCharacter());
+                } else {
+                    int caretPosition = getUb_l.getCaretPosition()-1;
+                    setAutoFunction();
+                    String text = getUb_l.getText();
+                    String newText = text.substring(0, caretPosition) + keyEvent.getCharacter() + text.substring(caretPosition);
+                    getUb_l.setText(newText);
+                    getUb_l.positionCaret(caretPosition + 1);
+                }
             }
             numUb_l = validateInput(getUb_l);
-            getUb_l.positionCaret(getUb_l.getText().length());
         });
+
 
         chooseFunction.getItems().addAll("Twoja funkcja", "Rosenbrock", "Booth", "Ackley", "Schwefel");
         chooseFunction.setValue("Twoja funkcja");

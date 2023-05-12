@@ -57,22 +57,26 @@ public class CuckooSearchController {
         getLb_r.setOnKeyTyped(keyEvent -> numLb_r = validateInput(getLb_r));
         getLb_l.setOnKeyTyped(keyEvent -> numLb_l = validateInput(getLb_l));
 
-        chooseFunction.getItems().addAll("Rosenbrock", "Booth", "Ackley", "Rastrigin");
+        chooseFunction.getItems().addAll("Rosenbrock", "Booth", "Ackley", "Schwefel");
         chooseFunction.setValue("Wybierz funkcję");
         chooseFunction.setOnAction(event -> {
             String selectedFunction = chooseFunction.getSelectionModel().getSelectedItem();
             switch (selectedFunction) {
                 case "Rosenbrock":
                     mode = 1;
+                    setFunction(mode);
                     break;
                 case "Booth":
                     mode = 2;
+                    setFunction(mode);
                     break;
                 case "Ackley":
                     mode = 3;
+                    setFunction(mode);
                     break;
                 case "Schwefel":
                     mode = 4;
+                    setFunction(mode);
                     break;
                 default:
                     mode = 0;
@@ -102,7 +106,10 @@ public class CuckooSearchController {
 
     private void setFunction(int mode){
         SetFunctions set = new SetFunctions(mode);
-
+        getLb_l.setText(String.valueOf(set.getLb_l()));
+        getLb_r.setText(String.valueOf(set.getLb_r()));
+        getUb_l.setText(String.valueOf(set.getUb_l()));
+        getUb_r.setText(String.valueOf(set.getUb_r()));
     }
 
     public void cuckoo(){

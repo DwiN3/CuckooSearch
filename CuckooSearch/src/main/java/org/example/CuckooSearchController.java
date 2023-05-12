@@ -11,7 +11,7 @@ import javafx.scene.text.Text;
 public class CuckooSearchController {
 
     @FXML
-    private TextField probability, alpha, leftBorder, upperBorder, maxIteration, populationSize;
+    private TextField populationSize, probability, alpha, leftBorder, upperBorder, maxIteration;
 
     @FXML
     private Button start, reset;
@@ -19,34 +19,44 @@ public class CuckooSearchController {
     @FXML
     private Text results;
 
+    private int mode = 0;
+    private double populationSize_, probability_, alpha_, maxIteration_;
 
     @FXML
     private void start() {
-
-    }
-    
-    
-    public void testApp() {
-        int populationSize = 500;
-        double probability = 0.25;
-        double alpha = 0.8;
+        populationSize_ = Integer.parseInt(populationSize.getText());
+        probability_ = Integer.parseInt(probability.getText());
+        alpha_ = Integer.parseInt(alpha.getText());
         double lb_l = -10.0, lb_r = -5.0, ub_l = 5.0, ub_r = 10.0;
         double[] lb = {lb_l, lb_r};
         double[] ub = {ub_l, ub_r};
-        int maxIterations = 1000;
+        maxIteration_ = Integer.parseInt(maxIteration.getText());
 
-        int mode = 0;
+        if(populationSize_ == 0 || probability_ == 0 || alpha_ == 0 || maxIteration_ == 0){
+            setDefultValues();
+        }
+
         // 0 - Twoja funkcja
         // 1 - Funkcja Rosenbrocka
         // 2 - Funkcja Bootha
         // 3 - Funkcja Ackleya
         // 4 - Funkcja Rastrigina
+        mode = 0;
 
-        CuckooSearch cuckooSearch = new CuckooSearch(populationSize, probability, alpha, lb, ub, maxIterations);
+        CuckooSearch cuckooSearch = new CuckooSearch((int) populationSize_, probability_, alpha_, lb, ub, (int) maxIteration_);
         cuckooSearch.run(mode);
-        System.out.println(cuckooSearch.getNameFunction());
-        System.out.println(cuckooSearch.getBestSolution());
-        System.out.println(cuckooSearch.getFitness());
-        System.out.println(cuckooSearch.getOptimum());
+
+        reset.setText(cuckooSearch.getNameFunction()+"\n"+cuckooSearch.getBestSolution()+"\n"+cuckooSearch.getFitness()+"\n"+cuckooSearch.getOptimum());
+    }
+    
+    
+    public void setDefultValues() {
+        populationSize_ = 500;
+        probability_ = 0.25;
+        alpha_ = 0.8;
+        double lb_l = -10.0, lb_r = -5.0, ub_l = 5.0, ub_r = 10.0;
+        double[] lb = {lb_l, lb_r};
+        double[] ub = {ub_l, ub_r};
+        maxIteration_ = 1000;
     }
 }

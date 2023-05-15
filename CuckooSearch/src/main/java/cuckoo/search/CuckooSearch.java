@@ -20,7 +20,6 @@ public class CuckooSearch {
     private String optimum = "";
     private double fitness = 0;
     private int mode = 0;
-    private int count = 10;
 
     public CuckooSearch(int populationSize,
                         double probability,
@@ -56,19 +55,17 @@ public class CuckooSearch {
 
     public double[] run() {
         initializePopulation();
-        sortPopulation(population);
+        sortPopulation();
         double[] solution = population[0];
 
         for (var iteration = 1; iteration <= maxIterations; iteration++) {
             var newPopulation = generateNewPopulation();
-            sortPopulation(newPopulation);
+            sortPopulation();
             updatePopulation(newPopulation);
-            sortPopulation(population);
+            sortPopulation();
 
-            if (fitness(population[0]) < fitness(solution))
-                solution = population[0];
-
-            count--;
+            if (calculateFitness(newPopulation[0]) < calculateFitness(solution))
+                solution = newPopulation[0];
         }
 
         return solution;
@@ -83,9 +80,8 @@ public class CuckooSearch {
         }
     }
 
-
-    private void sortPopulation(double[][] population) {
-        Arrays.sort(population, Comparator.comparingDouble(this::fitness));
+    private void sortPopulation() {
+        Arrays.sort(population, Comparator.comparingDouble(this::calculateFitness));
     }
 
     private double[][] generateNewPopulation() {
@@ -117,7 +113,6 @@ public class CuckooSearch {
                 .toArray();
     }
 
-
     private double calculateSigma() {
         var numerator = gamma(1.0 + alpha) * Math.sin(Math.PI * alpha / 2.0);
         var denominator = gamma((1.0 + alpha) / 2.0) * alpha * Math.pow(2.0, (alpha - 1.0) / 2.0);
@@ -126,6 +121,21 @@ public class CuckooSearch {
         return Math.pow(fraction, 1.0 / alpha);
     }
 
+    private double gamma(double x) {
+        return Math.exp(logGamma(x));
+    }
+
+    private double logGamma(double x) {
+        double[] coefficients = {0.99999999999980993, 676.5203681218851, -1259.1392167224028,
+                771.32342877765313, -176.61502916214059, 12.507343278686905,
+                -0.13857109526572012, 9.9843695780195716e-6, 1.5056327351493116e-7};
+
+        var sum = Arrays.stream(coefficients, 1, coefficients.length)
+                .map(coefficient -> coefficient / (x + coefficient))
+                .sum();
+
+        return Math.log(sum * Math.sqrt(2 * Math.PI)) - (x + 0.5) * Math.log(x + 5.5) + (x + 5.5);
+    }
 
     private double[] calculateStep(double[] cuckoo, double[] solution, double stepSize) {
         return IntStream.range(0, lowerBorder.length)
@@ -145,33 +155,37 @@ public class CuckooSearch {
                 .forEach(x -> population[x] = newPopulation[x]);
     }
 
-    private double fitness(double[] solution) {
-        return Math.pow(solution[0], 2) + Math.pow(solution[1], 2);
+    private double calculateFitness(double[] solution) {
+        var x = solution[0];
+        var y = solution[1];
+        double result;
+
+        switch (mode) {
+            case 1: // Funkcja Rosenbrocka
+                result = Math.pow(1 - x, 2) + 100 * Math.pow(y - Math.pow(x, 2), 2);
+                break;
+            case 2: // Funkcja Bootha
+                result = Math.pow(x + 2 * y - 7, 2) + Math.pow(2 * x + y - 5, 2);
+                break;
+            case 3: // Funkcja Ackleya
+                var term1 = -20 * Math.exp(-0.2 * Math.sqrt(0.5 * (Math.pow(x, 2) + Math.pow(y, 2))));
+                var term2 = -Math.exp(0.5 * (Math.cos(2 * Math.PI * x) + Math.cos(2 * Math.PI * y)));
+                result = term1 + term2 + Math.E + 20;
+                break;
+            case 4: // Funkcja Rastrigina
+                var sum = Math.pow(x, 2) - 10 * Math.cos(2 * Math.PI * x) + Math.pow(y, 2) - 10 * Math.cos(2 * Math.PI * y);
+                result = 20 + sum;
+                break;
+            default:
+                result = 0;
+                break;
+        }
+
+        return result;
     }
-
-    private double gamma(double x) {
-        return Math.exp(logGamma(x));
-    }
-
-    private double logGamma(double x) {
-        double[] coefficients = {0.99999999999980993, 676.5203681218851, -1259.1392167224028,
-                771.32342877765313, -176.61502916214059, 12.507343278686905,
-                -0.13857109526572012, 9.9843695780195716e-6, 1.5056327351493116e-7};
-
-        var sum = Arrays.stream(coefficients, 1, coefficients.length)
-                .map(coefficient -> coefficient / (x + coefficient))
-                .sum();
-
-        var logSum = Math.log(sum * Math.sqrt(2 * Math.PI));
-        var term1 = (x + 0.5) * Math.log(x + 5.5);
-        var term2 = x + 5.5;
-
-        return logSum - term1 + term2;
-    }
-
 
     private double clamp(double value, double min, double max) {
-        return Math.max(min, Math.min(max, value));
+        return Math.max(min, Math.min(value, max));
     }
 
     public void run(int mode) {
@@ -194,7 +208,7 @@ public class CuckooSearch {
         var solution = cuckooSearch.run();
 
         bestSolution = Arrays.toString(solution);
-        fitness = cuckooSearch.fitness(solution);
+        fitness = cuckooSearch.calculateFitness(solution);
     }
 }
 

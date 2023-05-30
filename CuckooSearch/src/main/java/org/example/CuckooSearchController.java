@@ -223,8 +223,8 @@ public class CuckooSearchController {
             System.out.println(cuckooSearch.getFitness());
             System.out.println(cuckooSearch.getOptimum());
 
-            setResult.setText(cuckooSearch.getNameFunction() + "\n"
-                    + cuckooSearch.getBestSolution() + "\n"
+            setResult.setText(cuckooSearch.getNameFunction() + "\nNajlepsze rozwiązanie:    "
+                    + cuckooSearch.getBestSolution() + "\nWartość dopasowania:    "
                     + cuckooSearch.getFitness() + "\n"
                     + cuckooSearch.getOptimum() + "\n");
         }

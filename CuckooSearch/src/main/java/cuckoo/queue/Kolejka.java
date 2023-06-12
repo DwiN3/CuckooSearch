@@ -24,6 +24,7 @@ public class Kolejka {
     private double q; // Względna zdolność obsługi
     private double A; // Bezwzględna zdolność obsługi
     private double m0; // Średnia ilość zajętych kanałów obsługi
+    private double v; // średnia ilość zgłoszeń w kolejce
 
     // END Które wynikają z ogólnych -------------------
 
@@ -43,6 +44,31 @@ public class Kolejka {
         this.q = obliczQ();
         this.A = obliczA();
         this.m0 = obliczM0();
+        this.v = obliczV();
+    }
+
+    private double obliczV() {
+        if (rho != m) {
+            double v;
+            double czlon1, licznik1, mianownik1, czlon2, licznik2, mianownik2;
+            licznik1 = Math.pow(rho, m+1) * p_0;
+            mianownik1 = silnia(m - 1);
+            czlon1 = licznik1 / mianownik1;
+
+            licznik2 = 1 - Math.pow((rho /  m), N) * ( N * ( 1 - rho / m ) + 1 );
+            mianownik2 = Math.pow(m - rho, 2);
+            czlon2 = licznik2 / mianownik2;
+
+            v = czlon1 * czlon2;
+            return v;
+        } else {
+            double v;
+            double czlon1, licznik, mianownik;
+            licznik = Math.pow(m, m) * N * ( N + 1 ) * p_0;
+            mianownik = silnia(m) * 2;
+            v = licznik / mianownik;
+            return v;
+        }
     }
 
     private double obliczM0() {

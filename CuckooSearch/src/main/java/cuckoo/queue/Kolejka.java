@@ -1,4 +1,4 @@
-package org.example;
+package cuckoo.queue;
 
 import java.util.ArrayList;
 import java.util.List;

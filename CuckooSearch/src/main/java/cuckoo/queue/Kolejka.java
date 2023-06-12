@@ -25,6 +25,9 @@ public class Kolejka {
     private double A; // Bezwzględna zdolność obsługi
     private double m0; // Średnia ilość zajętych kanałów obsługi
     private double v; // średnia ilość zgłoszeń w kolejce
+    private double n; // Średnia liczba zgłoszeń w systemie
+    private double tf; // Średni czas oczekiwania zgłoszenia w kolejce
+    private double ts; // Średni czas przebywania zgłoszenia
 
     // END Które wynikają z ogólnych -------------------
 
@@ -45,6 +48,39 @@ public class Kolejka {
         this.A = obliczA();
         this.m0 = obliczM0();
         this.v = obliczV();
+        this.n = obliczN(); // *małe n - Średnia liczbę zgłoszeń w systemie
+        this.tf = obliczTf();
+        this.ts = obliczTs();
+    }
+
+    private double obliczTs() {
+        // TODO: 12.06.2023 trzeba sprawdzić, czy pobierane prawdopodobieństwo jest dobre (indeksowanie itp)
+        double skladnikDodawania1, skladnikDodawania2, licznik2, mianownik2;
+        skladnikDodawania1 = v / lambda;
+        licznik2 = rho * (1 - listaPrawdopodopienstw.get(m + N - 1));
+        mianownik2 = mju;
+        skladnikDodawania2 = licznik2 / mianownik2;
+        return skladnikDodawania1 + skladnikDodawania2;
+    }
+
+    private double obliczTf() {
+        if (rho == m) {
+            double licznik, mianownik, tf;
+            licznik = Math.pow(m, m) * N * (N - 1) * p_0;
+            mianownik = lambda * silnia(m) * 2;
+            tf = licznik / mianownik;
+            return tf;
+        } else {
+            double licznik, mianownik, tf;
+            licznik = Math.pow(rho, m + 1) * (1 - Math.pow((rho / m), N)) * (N * (1 - rho / m) + 1) * p_0;
+            mianownik = lambda * silnia(m - 1) * Math.pow(m - rho, 2);
+            tf = licznik / mianownik;
+            return tf;
+        }
+    }
+
+    private double obliczN() {
+        return v +  m0;
     }
 
     private double obliczV() {
@@ -182,6 +218,4 @@ public class Kolejka {
         }
         return factorial;
     }
-
-
 }

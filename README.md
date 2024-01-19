@@ -11,3 +11,5 @@
 * maxIterations - zwiększenie tej wartości zwiększy liczbę iteracji algorytmu, co zwiększy szansę na znalezienie lepszego minimum globalnego. Jednakże zwiększenie tej wartości również zwiększy czas obliczeń i zużycie pamięci.
 
 * lb_l, lb_r, ub_l, ub_r - zmiana wartości granicznych dla zmiennych niezależnych wpłynie na zakres poszukiwań rozwiązania. Zwiększenie tych wartości zwiększy zakres poszukiwań, ale może również prowadzić do większego zużycia pamięci i czasu obliczeń.
+
+Wersja z wykorzystaniem pythona: https://github.com/EagleBlood/CuckooSearch
